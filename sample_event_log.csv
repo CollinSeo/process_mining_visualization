@@ -1,0 +1,143 @@
+case_id,activity,timestamp,resource
+C001,Register Request,2026-03-01 09:00:00,alice
+C001,Validate Request,2026-03-01 09:12:00,bob
+C001,Assess Risk,2026-03-01 10:10:00,claire
+C001,Approve,2026-03-01 11:00:00,manager_1
+C001,Archive,2026-03-01 11:10:00,system
+C002,Register Request,2026-03-02 08:41:00,alice
+C002,Validate Request,2026-03-02 09:05:00,bob
+C002,Request Additional Info,2026-03-02 09:40:00,claire
+C002,Validate Request,2026-03-02 12:05:00,bob
+C002,Approve,2026-03-02 13:00:00,manager_2
+C002,Archive,2026-03-02 13:05:00,system
+C003,Register Request,2026-03-03 10:15:00,david
+C003,Validate Request,2026-03-03 10:30:00,bob
+C003,Assess Risk,2026-03-03 11:00:00,claire
+C003,Reject,2026-03-03 11:45:00,manager_1
+C003,Archive,2026-03-03 11:50:00,system
+C004,Register Request,2026-03-04 09:10:00,alice
+C004,Validate Request,2026-03-04 09:25:00,bob
+C004,Assess Risk,2026-03-04 10:00:00,claire
+C004,Approve,2026-03-04 10:20:00,manager_2
+C004,Archive,2026-03-04 10:23:00,system
+C005,Register Request,2026-03-05 14:00:00,david
+C005,Validate Request,2026-03-05 14:20:00,bob
+C005,Request Additional Info,2026-03-05 15:00:00,claire
+C005,Validate Request,2026-03-06 09:05:00,bob
+C005,Assess Risk,2026-03-06 09:40:00,claire
+C005,Approve,2026-03-06 10:10:00,manager_1
+C005,Archive,2026-03-06 10:15:00,system
+C006,Register Request,2026-03-06 10:30:00,alice
+C006,Validate Request,2026-03-06 10:48:00,bob
+C006,Fraud Check,2026-03-06 11:20:00,analyst_1
+C006,Assess Risk,2026-03-06 11:50:00,claire
+C006,Approve,2026-03-06 12:20:00,manager_2
+C006,Archive,2026-03-06 12:30:00,system
+C007,Register Request,2026-03-07 09:05:00,david
+C007,Validate Request,2026-03-07 09:25:00,bob
+C007,Assess Risk,2026-03-07 10:00:00,claire
+C007,Approve,2026-03-07 10:40:00,manager_1
+C007,Archive,2026-03-07 10:45:00,system
+C008,Register Request,2026-03-07 11:10:00,alice
+C008,Validate Request,2026-03-07 11:30:00,bob
+C008,Request Additional Info,2026-03-07 11:50:00,claire
+C008,Validate Request,2026-03-08 09:10:00,bob
+C008,Approve,2026-03-08 09:50:00,manager_2
+C008,Archive,2026-03-08 10:00:00,system
+C009,Register Request,2026-03-08 10:20:00,david
+C009,Validate Request,2026-03-08 10:45:00,bob
+C009,Assess Risk,2026-03-08 11:15:00,claire
+C009,Reject,2026-03-08 11:55:00,manager_1
+C009,Archive,2026-03-08 12:00:00,system
+C010,Register Request,2026-03-09 09:00:00,alice
+C010,Validate Request,2026-03-09 09:18:00,bob
+C010,Fraud Check,2026-03-09 09:45:00,analyst_1
+C010,Assess Risk,2026-03-09 10:20:00,claire
+C010,Approve,2026-03-09 10:55:00,manager_2
+C010,Archive,2026-03-09 11:05:00,system
+C011,Register Request,2026-03-09 11:30:00,david
+C011,Validate Request,2026-03-09 11:45:00,bob
+C011,Assess Risk,2026-03-09 12:10:00,claire
+C011,Request Additional Info,2026-03-09 12:35:00,claire
+C011,Validate Request,2026-03-10 08:55:00,bob
+C011,Approve,2026-03-10 09:35:00,manager_1
+C011,Archive,2026-03-10 09:40:00,system
+C012,Register Request,2026-03-10 10:05:00,alice
+C012,Validate Request,2026-03-10 10:20:00,bob
+C012,Assess Risk,2026-03-10 10:55:00,claire
+C012,Approve,2026-03-10 11:25:00,manager_2
+C012,Archive,2026-03-10 11:30:00,system
+C013,Register Request,2026-03-11 09:15:00,david
+C013,Validate Request,2026-03-11 09:33:00,bob
+C013,Request Additional Info,2026-03-11 09:55:00,claire
+C013,Validate Request,2026-03-11 13:05:00,bob
+C013,Approve,2026-03-11 13:45:00,manager_1
+C013,Archive,2026-03-11 13:50:00,system
+C014,Register Request,2026-03-11 14:20:00,alice
+C014,Validate Request,2026-03-11 14:40:00,bob
+C014,Assess Risk,2026-03-11 15:05:00,claire
+C014,Reject,2026-03-11 15:40:00,manager_2
+C014,Archive,2026-03-11 15:45:00,system
+C015,Register Request,2026-03-12 09:00:00,david
+C015,Validate Request,2026-03-12 09:14:00,bob
+C015,Fraud Check,2026-03-12 09:40:00,analyst_1
+C015,Assess Risk,2026-03-12 10:05:00,claire
+C015,Approve,2026-03-12 10:35:00,manager_1
+C015,Archive,2026-03-12 10:40:00,system
+C016,Register Request,2026-03-12 11:10:00,alice
+C016,Validate Request,2026-03-12 11:30:00,bob
+C016,Assess Risk,2026-03-12 11:55:00,claire
+C016,Approve,2026-03-12 12:20:00,manager_2
+C016,Archive,2026-03-12 12:25:00,system
+C017,Register Request,2026-03-13 09:10:00,david
+C017,Validate Request,2026-03-13 09:30:00,bob
+C017,Request Additional Info,2026-03-13 09:55:00,claire
+C017,Validate Request,2026-03-13 12:30:00,bob
+C017,Assess Risk,2026-03-13 13:05:00,claire
+C017,Approve,2026-03-13 13:35:00,manager_1
+C017,Archive,2026-03-13 13:40:00,system
+C018,Register Request,2026-03-13 14:10:00,alice
+C018,Validate Request,2026-03-13 14:25:00,bob
+C018,Assess Risk,2026-03-13 14:55:00,claire
+C018,Reject,2026-03-13 15:25:00,manager_2
+C018,Archive,2026-03-13 15:30:00,system
+C019,Register Request,2026-03-14 09:05:00,david
+C019,Validate Request,2026-03-14 09:20:00,bob
+C019,Fraud Check,2026-03-14 09:50:00,analyst_1
+C019,Assess Risk,2026-03-14 10:20:00,claire
+C019,Approve,2026-03-14 10:55:00,manager_2
+C019,Archive,2026-03-14 11:00:00,system
+C020,Register Request,2026-03-14 11:25:00,alice
+C020,Validate Request,2026-03-14 11:45:00,bob
+C020,Assess Risk,2026-03-14 12:15:00,claire
+C020,Request Additional Info,2026-03-14 12:50:00,claire
+C020,Validate Request,2026-03-15 09:15:00,bob
+C020,Approve,2026-03-15 09:50:00,manager_1
+C020,Archive,2026-03-15 09:55:00,system
+C021,Register Request,2026-03-15 10:20:00,david
+C021,Validate Request,2026-03-15 10:38:00,bob
+C021,Assess Risk,2026-03-15 11:05:00,claire
+C021,Approve,2026-03-15 11:30:00,manager_2
+C021,Archive,2026-03-15 11:35:00,system
+C022,Register Request,2026-03-15 12:05:00,alice
+C022,Validate Request,2026-03-15 12:25:00,bob
+C022,Request Additional Info,2026-03-15 12:45:00,claire
+C022,Validate Request,2026-03-16 09:05:00,bob
+C022,Approve,2026-03-16 09:40:00,manager_1
+C022,Archive,2026-03-16 09:45:00,system
+C023,Register Request,2026-03-16 10:15:00,david
+C023,Validate Request,2026-03-16 10:35:00,bob
+C023,Assess Risk,2026-03-16 11:05:00,claire
+C023,Reject,2026-03-16 11:35:00,manager_2
+C023,Archive,2026-03-16 11:40:00,system
+C024,Register Request,2026-03-16 12:10:00,alice
+C024,Validate Request,2026-03-16 12:30:00,bob
+C024,Fraud Check,2026-03-16 12:55:00,analyst_1
+C024,Assess Risk,2026-03-16 13:25:00,claire
+C024,Approve,2026-03-16 13:50:00,manager_1
+C024,Archive,2026-03-16 13:55:00,system
+C025,Register Request,2026-03-17 09:00:00,david
+C025,Validate Request,2026-03-17 09:20:00,bob
+C025,Assess Risk,2026-03-17 09:45:00,claire
+C025,Approve,2026-03-17 10:15:00,manager_2
+C025,Archive,2026-03-17 10:20:00,system

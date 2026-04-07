@@ -1,0 +1,472 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #F7FAFC;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body><h2 style='font-family:Segoe UI,Arial,sans-serif;margin:14px 18px;color:#0F172A;'>Directly-Follows Graph</h2>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"baseColor": "#4b76e3", "borderWidth": 2, "color": {"background": "#4b76e3", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 25, "id": "Register Request", "label": "Register Request", "shape": "ellipse", "size": 77.14285714285714, "title": "Activity: Register Request\u003cbr\u003eFrequency: 25", "x": 0.0, "y": 216.0}, {"baseColor": "#1d4ed8", "borderWidth": 2, "color": {"background": "#1d4ed8", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 33, "id": "Validate Request", "label": "Validate Request", "shape": "ellipse", "size": 90.0, "title": "Activity: Validate Request\u003cbr\u003eFrequency: 33", "x": 486.00000000000006, "y": 647.9999999999999}, {"baseColor": "#628ae8", "borderWidth": 2, "color": {"background": "#628ae8", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 21, "id": "Assess Risk", "label": "Assess Risk", "shape": "ellipse", "size": 70.71428571428571, "title": "Activity: Assess Risk\u003cbr\u003eFrequency: 21", "x": -486.00000000000006, "y": 647.9999999999999}, {"baseColor": "#688fea", "borderWidth": 2, "color": {"background": "#688fea", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 20, "id": "Approve", "label": "Approve", "shape": "ellipse", "size": 69.10714285714286, "title": "Activity: Approve\u003cbr\u003eFrequency: 20", "x": 0.0, "y": 1080.0}, {"baseColor": "#4b76e3", "borderWidth": 2, "color": {"background": "#4b76e3", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 25, "id": "Archive", "label": "Archive", "shape": "ellipse", "size": 77.14285714285714, "title": "Activity: Archive\u003cbr\u003eFrequency: 25", "x": 0.0, "y": 1295.9999999999998}, {"baseColor": "#4b76e3", "borderWidth": 2, "color": {"background": "#4b76e3", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 25, "id": "[START]", "label": "[START]", "shape": "ellipse", "size": 77.14285714285714, "title": "Activity: [START]\u003cbr\u003eFrequency: 25", "x": 0.0, "y": -0.0}, {"baseColor": "#4b76e3", "borderWidth": 2, "color": {"background": "#4b76e3", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 25, "id": "[END]", "label": "[END]", "shape": "ellipse", "size": 77.14285714285714, "title": "Activity: [END]\u003cbr\u003eFrequency: 25", "x": 0.0, "y": 1512.0}, {"baseColor": "#aeccfa", "borderWidth": 2, "color": {"background": "#aeccfa", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 8, "id": "Request Additional Info", "label": "Request Additional Info", "shape": "ellipse", "size": 49.82142857142857, "title": "Activity: Request Additional Info\u003cbr\u003eFrequency: 8", "x": 161.99999999999997, "y": 647.9999999999999}, {"baseColor": "#bfdbfe", "borderWidth": 2, "color": {"background": "#bfdbfe", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 5, "id": "Reject", "label": "Reject", "shape": "ellipse", "size": 45.0, "title": "Activity: Reject\u003cbr\u003eFrequency: 5", "x": 0.0, "y": 864.0}, {"baseColor": "#bfdbfe", "borderWidth": 2, "color": {"background": "#bfdbfe", "border": "#0F172A", "highlight": "#2563EB"}, "fixed": {"x": false, "y": false}, "font": {"color": "#0F172A"}, "freq": 5, "id": "Fraud Check", "label": "Fraud Check", "shape": "ellipse", "size": 45.0, "title": "Activity: Fraud Check\u003cbr\u003eFrequency: 5", "x": -162.00000000000003, "y": 647.9999999999999}]);
+                  edges = new vis.DataSet([{"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 10.0, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 25, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Register Request", "id": "Register Request|||Validate Request", "label": "n=25 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Register Request -\u003e Validate Request\u003cbr\u003eCount: 25\u003cbr\u003eProbability: 1.00", "to": "Validate Request", "width": 10.0}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 6.869565217391305, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 16, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Validate Request", "id": "Validate Request|||Assess Risk", "label": "n=16 | p=0.48", "prob": 0.48484848484848486, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Validate Request -\u003e Assess Risk\u003cbr\u003eCount: 16\u003cbr\u003eProbability: 0.48", "to": "Assess Risk", "width": 6.869565217391305}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.391304347826087, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 6, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Validate Request", "id": "Validate Request|||Request Additional Info", "label": "n=6 | p=0.18", "prob": 0.18181818181818182, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Validate Request -\u003e Request Additional Info\u003cbr\u003eCount: 6\u003cbr\u003eProbability: 0.18", "to": "Request Additional Info", "width": 3.391304347826087}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.391304347826087, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 6, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Validate Request", "id": "Validate Request|||Approve", "label": "n=6 | p=0.18", "prob": 0.18181818181818182, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Validate Request -\u003e Approve\u003cbr\u003eCount: 6\u003cbr\u003eProbability: 0.18", "to": "Approve", "width": 3.391304347826087}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.0434782608695654, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 5, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Validate Request", "id": "Validate Request|||Fraud Check", "label": "n=5 | p=0.15", "prob": 0.15151515151515152, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Validate Request -\u003e Fraud Check\u003cbr\u003eCount: 5\u003cbr\u003eProbability: 0.15", "to": "Fraud Check", "width": 3.0434782608695654}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 6.173913043478261, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 14, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Assess Risk", "id": "Assess Risk|||Approve", "label": "n=14 | p=0.67", "prob": 0.6666666666666666, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Assess Risk -\u003e Approve\u003cbr\u003eCount: 14\u003cbr\u003eProbability: 0.67", "to": "Approve", "width": 6.173913043478261}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.0434782608695654, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 5, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Assess Risk", "id": "Assess Risk|||Reject", "label": "n=5 | p=0.24", "prob": 0.23809523809523808, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Assess Risk -\u003e Reject\u003cbr\u003eCount: 5\u003cbr\u003eProbability: 0.24", "to": "Reject", "width": 3.0434782608695654}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 2.0, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 2, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Assess Risk", "id": "Assess Risk|||Request Additional Info", "label": "n=2 | p=0.10", "prob": 0.09523809523809523, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Assess Risk -\u003e Request Additional Info\u003cbr\u003eCount: 2\u003cbr\u003eProbability: 0.10", "to": "Request Additional Info", "width": 2.0}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 8.26086956521739, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 20, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Approve", "id": "Approve|||Archive", "label": "n=20 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Approve -\u003e Archive\u003cbr\u003eCount: 20\u003cbr\u003eProbability: 1.00", "to": "Archive", "width": 8.26086956521739}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 10.0, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 25, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Archive", "id": "Archive|||[END]", "label": "n=25 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Archive -\u003e [END]\u003cbr\u003eCount: 25\u003cbr\u003eProbability: 1.00", "to": "[END]", "width": 10.0}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 10.0, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 25, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "[START]", "id": "[START]|||Register Request", "label": "n=25 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "[START] -\u003e Register Request\u003cbr\u003eCount: 25\u003cbr\u003eProbability: 1.00", "to": "Register Request", "width": 10.0}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 4.086956521739131, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 8, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Request Additional Info", "id": "Request Additional Info|||Validate Request", "label": "n=8 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Request Additional Info -\u003e Validate Request\u003cbr\u003eCount: 8\u003cbr\u003eProbability: 1.00", "to": "Validate Request", "width": 4.086956521739131}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.0434782608695654, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 5, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Reject", "id": "Reject|||Archive", "label": "n=5 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Reject -\u003e Archive\u003cbr\u003eCount: 5\u003cbr\u003eProbability: 1.00", "to": "Archive", "width": 3.0434782608695654}, {"arrows": "to", "baseColor": "#1E40AF", "baseWidth": 3.0434782608695654, "color": {"color": "#1E40AF", "highlight": "#1D4ED8", "inherit": false}, "count": 5, "font": {"align": "middle", "size": 16, "strokeColor": "#FFFFFF", "strokeWidth": 6}, "from": "Fraud Check", "id": "Fraud Check|||Assess Risk", "label": "n=5 | p=1.00", "prob": 1.0, "smooth": {"enabled": true, "roundness": 0.12, "type": "curvedCW"}, "title": "Fraud Check -\u003e Assess Risk\u003cbr\u003eCount: 5\u003cbr\u003eProbability: 1.00", "to": "Assess Risk", "width": 3.0434782608695654}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"autoResize": false, "layout": {"improvedLayout": false}, "interaction": {"hover": true, "tooltipDelay": 120, "navigationButtons": true, "keyboard": true, "zoomView": true, "dragView": true, "dragNodes": true}, "edges": {"shadow": true, "selectionWidth": 2}, "nodes": {"shadow": true}, "physics": {"enabled": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+<script type="text/javascript"> 
+(function () {
+  function attachControls() {
+    if (typeof nodes === 'undefined' || typeof edges === 'undefined' || typeof network === 'undefined') {
+      setTimeout(attachControls, 200);
+      return;
+    }
+
+    var allNodes = nodes.get();
+    var allEdges = edges.get();
+    var replayEvents = [{"case_id": "C001", "activity": "Register Request", "timestamp": "2026-03-01T09:00:00", "edge_id": ""}, {"case_id": "C001", "activity": "Validate Request", "timestamp": "2026-03-01T09:12:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C001", "activity": "Assess Risk", "timestamp": "2026-03-01T10:10:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C001", "activity": "Approve", "timestamp": "2026-03-01T11:00:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C001", "activity": "Archive", "timestamp": "2026-03-01T11:10:00", "edge_id": "Approve|||Archive"}, {"case_id": "C002", "activity": "Register Request", "timestamp": "2026-03-02T08:41:00", "edge_id": ""}, {"case_id": "C002", "activity": "Validate Request", "timestamp": "2026-03-02T09:05:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C002", "activity": "Request Additional Info", "timestamp": "2026-03-02T09:40:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C002", "activity": "Validate Request", "timestamp": "2026-03-02T12:05:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C002", "activity": "Approve", "timestamp": "2026-03-02T13:00:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C002", "activity": "Archive", "timestamp": "2026-03-02T13:05:00", "edge_id": "Approve|||Archive"}, {"case_id": "C003", "activity": "Register Request", "timestamp": "2026-03-03T10:15:00", "edge_id": ""}, {"case_id": "C003", "activity": "Validate Request", "timestamp": "2026-03-03T10:30:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C003", "activity": "Assess Risk", "timestamp": "2026-03-03T11:00:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C003", "activity": "Reject", "timestamp": "2026-03-03T11:45:00", "edge_id": "Assess Risk|||Reject"}, {"case_id": "C003", "activity": "Archive", "timestamp": "2026-03-03T11:50:00", "edge_id": "Reject|||Archive"}, {"case_id": "C004", "activity": "Register Request", "timestamp": "2026-03-04T09:10:00", "edge_id": ""}, {"case_id": "C004", "activity": "Validate Request", "timestamp": "2026-03-04T09:25:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C004", "activity": "Assess Risk", "timestamp": "2026-03-04T10:00:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C004", "activity": "Approve", "timestamp": "2026-03-04T10:20:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C004", "activity": "Archive", "timestamp": "2026-03-04T10:23:00", "edge_id": "Approve|||Archive"}, {"case_id": "C005", "activity": "Register Request", "timestamp": "2026-03-05T14:00:00", "edge_id": ""}, {"case_id": "C005", "activity": "Validate Request", "timestamp": "2026-03-05T14:20:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C005", "activity": "Request Additional Info", "timestamp": "2026-03-05T15:00:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C005", "activity": "Validate Request", "timestamp": "2026-03-06T09:05:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C005", "activity": "Assess Risk", "timestamp": "2026-03-06T09:40:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C005", "activity": "Approve", "timestamp": "2026-03-06T10:10:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C005", "activity": "Archive", "timestamp": "2026-03-06T10:15:00", "edge_id": "Approve|||Archive"}, {"case_id": "C006", "activity": "Register Request", "timestamp": "2026-03-06T10:30:00", "edge_id": ""}, {"case_id": "C006", "activity": "Validate Request", "timestamp": "2026-03-06T10:48:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C006", "activity": "Fraud Check", "timestamp": "2026-03-06T11:20:00", "edge_id": "Validate Request|||Fraud Check"}, {"case_id": "C006", "activity": "Assess Risk", "timestamp": "2026-03-06T11:50:00", "edge_id": "Fraud Check|||Assess Risk"}, {"case_id": "C006", "activity": "Approve", "timestamp": "2026-03-06T12:20:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C006", "activity": "Archive", "timestamp": "2026-03-06T12:30:00", "edge_id": "Approve|||Archive"}, {"case_id": "C007", "activity": "Register Request", "timestamp": "2026-03-07T09:05:00", "edge_id": ""}, {"case_id": "C007", "activity": "Validate Request", "timestamp": "2026-03-07T09:25:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C007", "activity": "Assess Risk", "timestamp": "2026-03-07T10:00:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C007", "activity": "Approve", "timestamp": "2026-03-07T10:40:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C007", "activity": "Archive", "timestamp": "2026-03-07T10:45:00", "edge_id": "Approve|||Archive"}, {"case_id": "C008", "activity": "Register Request", "timestamp": "2026-03-07T11:10:00", "edge_id": ""}, {"case_id": "C008", "activity": "Validate Request", "timestamp": "2026-03-07T11:30:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C008", "activity": "Request Additional Info", "timestamp": "2026-03-07T11:50:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C008", "activity": "Validate Request", "timestamp": "2026-03-08T09:10:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C008", "activity": "Approve", "timestamp": "2026-03-08T09:50:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C008", "activity": "Archive", "timestamp": "2026-03-08T10:00:00", "edge_id": "Approve|||Archive"}, {"case_id": "C009", "activity": "Register Request", "timestamp": "2026-03-08T10:20:00", "edge_id": ""}, {"case_id": "C009", "activity": "Validate Request", "timestamp": "2026-03-08T10:45:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C009", "activity": "Assess Risk", "timestamp": "2026-03-08T11:15:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C009", "activity": "Reject", "timestamp": "2026-03-08T11:55:00", "edge_id": "Assess Risk|||Reject"}, {"case_id": "C009", "activity": "Archive", "timestamp": "2026-03-08T12:00:00", "edge_id": "Reject|||Archive"}, {"case_id": "C010", "activity": "Register Request", "timestamp": "2026-03-09T09:00:00", "edge_id": ""}, {"case_id": "C010", "activity": "Validate Request", "timestamp": "2026-03-09T09:18:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C010", "activity": "Fraud Check", "timestamp": "2026-03-09T09:45:00", "edge_id": "Validate Request|||Fraud Check"}, {"case_id": "C010", "activity": "Assess Risk", "timestamp": "2026-03-09T10:20:00", "edge_id": "Fraud Check|||Assess Risk"}, {"case_id": "C010", "activity": "Approve", "timestamp": "2026-03-09T10:55:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C010", "activity": "Archive", "timestamp": "2026-03-09T11:05:00", "edge_id": "Approve|||Archive"}, {"case_id": "C011", "activity": "Register Request", "timestamp": "2026-03-09T11:30:00", "edge_id": ""}, {"case_id": "C011", "activity": "Validate Request", "timestamp": "2026-03-09T11:45:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C011", "activity": "Assess Risk", "timestamp": "2026-03-09T12:10:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C011", "activity": "Request Additional Info", "timestamp": "2026-03-09T12:35:00", "edge_id": "Assess Risk|||Request Additional Info"}, {"case_id": "C011", "activity": "Validate Request", "timestamp": "2026-03-10T08:55:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C011", "activity": "Approve", "timestamp": "2026-03-10T09:35:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C011", "activity": "Archive", "timestamp": "2026-03-10T09:40:00", "edge_id": "Approve|||Archive"}, {"case_id": "C012", "activity": "Register Request", "timestamp": "2026-03-10T10:05:00", "edge_id": ""}, {"case_id": "C012", "activity": "Validate Request", "timestamp": "2026-03-10T10:20:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C012", "activity": "Assess Risk", "timestamp": "2026-03-10T10:55:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C012", "activity": "Approve", "timestamp": "2026-03-10T11:25:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C012", "activity": "Archive", "timestamp": "2026-03-10T11:30:00", "edge_id": "Approve|||Archive"}, {"case_id": "C013", "activity": "Register Request", "timestamp": "2026-03-11T09:15:00", "edge_id": ""}, {"case_id": "C013", "activity": "Validate Request", "timestamp": "2026-03-11T09:33:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C013", "activity": "Request Additional Info", "timestamp": "2026-03-11T09:55:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C013", "activity": "Validate Request", "timestamp": "2026-03-11T13:05:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C013", "activity": "Approve", "timestamp": "2026-03-11T13:45:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C013", "activity": "Archive", "timestamp": "2026-03-11T13:50:00", "edge_id": "Approve|||Archive"}, {"case_id": "C014", "activity": "Register Request", "timestamp": "2026-03-11T14:20:00", "edge_id": ""}, {"case_id": "C014", "activity": "Validate Request", "timestamp": "2026-03-11T14:40:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C014", "activity": "Assess Risk", "timestamp": "2026-03-11T15:05:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C014", "activity": "Reject", "timestamp": "2026-03-11T15:40:00", "edge_id": "Assess Risk|||Reject"}, {"case_id": "C014", "activity": "Archive", "timestamp": "2026-03-11T15:45:00", "edge_id": "Reject|||Archive"}, {"case_id": "C015", "activity": "Register Request", "timestamp": "2026-03-12T09:00:00", "edge_id": ""}, {"case_id": "C015", "activity": "Validate Request", "timestamp": "2026-03-12T09:14:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C015", "activity": "Fraud Check", "timestamp": "2026-03-12T09:40:00", "edge_id": "Validate Request|||Fraud Check"}, {"case_id": "C015", "activity": "Assess Risk", "timestamp": "2026-03-12T10:05:00", "edge_id": "Fraud Check|||Assess Risk"}, {"case_id": "C015", "activity": "Approve", "timestamp": "2026-03-12T10:35:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C015", "activity": "Archive", "timestamp": "2026-03-12T10:40:00", "edge_id": "Approve|||Archive"}, {"case_id": "C016", "activity": "Register Request", "timestamp": "2026-03-12T11:10:00", "edge_id": ""}, {"case_id": "C016", "activity": "Validate Request", "timestamp": "2026-03-12T11:30:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C016", "activity": "Assess Risk", "timestamp": "2026-03-12T11:55:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C016", "activity": "Approve", "timestamp": "2026-03-12T12:20:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C016", "activity": "Archive", "timestamp": "2026-03-12T12:25:00", "edge_id": "Approve|||Archive"}, {"case_id": "C017", "activity": "Register Request", "timestamp": "2026-03-13T09:10:00", "edge_id": ""}, {"case_id": "C017", "activity": "Validate Request", "timestamp": "2026-03-13T09:30:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C017", "activity": "Request Additional Info", "timestamp": "2026-03-13T09:55:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C017", "activity": "Validate Request", "timestamp": "2026-03-13T12:30:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C017", "activity": "Assess Risk", "timestamp": "2026-03-13T13:05:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C017", "activity": "Approve", "timestamp": "2026-03-13T13:35:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C017", "activity": "Archive", "timestamp": "2026-03-13T13:40:00", "edge_id": "Approve|||Archive"}, {"case_id": "C018", "activity": "Register Request", "timestamp": "2026-03-13T14:10:00", "edge_id": ""}, {"case_id": "C018", "activity": "Validate Request", "timestamp": "2026-03-13T14:25:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C018", "activity": "Assess Risk", "timestamp": "2026-03-13T14:55:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C018", "activity": "Reject", "timestamp": "2026-03-13T15:25:00", "edge_id": "Assess Risk|||Reject"}, {"case_id": "C018", "activity": "Archive", "timestamp": "2026-03-13T15:30:00", "edge_id": "Reject|||Archive"}, {"case_id": "C019", "activity": "Register Request", "timestamp": "2026-03-14T09:05:00", "edge_id": ""}, {"case_id": "C019", "activity": "Validate Request", "timestamp": "2026-03-14T09:20:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C019", "activity": "Fraud Check", "timestamp": "2026-03-14T09:50:00", "edge_id": "Validate Request|||Fraud Check"}, {"case_id": "C019", "activity": "Assess Risk", "timestamp": "2026-03-14T10:20:00", "edge_id": "Fraud Check|||Assess Risk"}, {"case_id": "C019", "activity": "Approve", "timestamp": "2026-03-14T10:55:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C019", "activity": "Archive", "timestamp": "2026-03-14T11:00:00", "edge_id": "Approve|||Archive"}, {"case_id": "C020", "activity": "Register Request", "timestamp": "2026-03-14T11:25:00", "edge_id": ""}, {"case_id": "C020", "activity": "Validate Request", "timestamp": "2026-03-14T11:45:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C020", "activity": "Assess Risk", "timestamp": "2026-03-14T12:15:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C020", "activity": "Request Additional Info", "timestamp": "2026-03-14T12:50:00", "edge_id": "Assess Risk|||Request Additional Info"}, {"case_id": "C020", "activity": "Validate Request", "timestamp": "2026-03-15T09:15:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C020", "activity": "Approve", "timestamp": "2026-03-15T09:50:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C020", "activity": "Archive", "timestamp": "2026-03-15T09:55:00", "edge_id": "Approve|||Archive"}, {"case_id": "C021", "activity": "Register Request", "timestamp": "2026-03-15T10:20:00", "edge_id": ""}, {"case_id": "C021", "activity": "Validate Request", "timestamp": "2026-03-15T10:38:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C021", "activity": "Assess Risk", "timestamp": "2026-03-15T11:05:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C021", "activity": "Approve", "timestamp": "2026-03-15T11:30:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C021", "activity": "Archive", "timestamp": "2026-03-15T11:35:00", "edge_id": "Approve|||Archive"}, {"case_id": "C022", "activity": "Register Request", "timestamp": "2026-03-15T12:05:00", "edge_id": ""}, {"case_id": "C022", "activity": "Validate Request", "timestamp": "2026-03-15T12:25:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C022", "activity": "Request Additional Info", "timestamp": "2026-03-15T12:45:00", "edge_id": "Validate Request|||Request Additional Info"}, {"case_id": "C022", "activity": "Validate Request", "timestamp": "2026-03-16T09:05:00", "edge_id": "Request Additional Info|||Validate Request"}, {"case_id": "C022", "activity": "Approve", "timestamp": "2026-03-16T09:40:00", "edge_id": "Validate Request|||Approve"}, {"case_id": "C022", "activity": "Archive", "timestamp": "2026-03-16T09:45:00", "edge_id": "Approve|||Archive"}, {"case_id": "C023", "activity": "Register Request", "timestamp": "2026-03-16T10:15:00", "edge_id": ""}, {"case_id": "C023", "activity": "Validate Request", "timestamp": "2026-03-16T10:35:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C023", "activity": "Assess Risk", "timestamp": "2026-03-16T11:05:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C023", "activity": "Reject", "timestamp": "2026-03-16T11:35:00", "edge_id": "Assess Risk|||Reject"}, {"case_id": "C023", "activity": "Archive", "timestamp": "2026-03-16T11:40:00", "edge_id": "Reject|||Archive"}, {"case_id": "C024", "activity": "Register Request", "timestamp": "2026-03-16T12:10:00", "edge_id": ""}, {"case_id": "C024", "activity": "Validate Request", "timestamp": "2026-03-16T12:30:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C024", "activity": "Fraud Check", "timestamp": "2026-03-16T12:55:00", "edge_id": "Validate Request|||Fraud Check"}, {"case_id": "C024", "activity": "Assess Risk", "timestamp": "2026-03-16T13:25:00", "edge_id": "Fraud Check|||Assess Risk"}, {"case_id": "C024", "activity": "Approve", "timestamp": "2026-03-16T13:50:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C024", "activity": "Archive", "timestamp": "2026-03-16T13:55:00", "edge_id": "Approve|||Archive"}, {"case_id": "C025", "activity": "Register Request", "timestamp": "2026-03-17T09:00:00", "edge_id": ""}, {"case_id": "C025", "activity": "Validate Request", "timestamp": "2026-03-17T09:20:00", "edge_id": "Register Request|||Validate Request"}, {"case_id": "C025", "activity": "Assess Risk", "timestamp": "2026-03-17T09:45:00", "edge_id": "Validate Request|||Assess Risk"}, {"case_id": "C025", "activity": "Approve", "timestamp": "2026-03-17T10:15:00", "edge_id": "Assess Risk|||Approve"}, {"case_id": "C025", "activity": "Archive", "timestamp": "2026-03-17T10:20:00", "edge_id": "Approve|||Archive"}];
+    if (!allNodes.length) {
+      return;
+    }
+
+    var panel = document.createElement('div');
+    panel.style.position = 'fixed';
+    panel.style.top = '14px';
+    panel.style.right = '14px';
+    panel.style.zIndex = '9999';
+    panel.style.background = 'rgba(255,255,255,0.96)';
+    panel.style.border = '1px solid #cbd5e1';
+    panel.style.borderRadius = '10px';
+    panel.style.padding = '10px 12px';
+    panel.style.fontFamily = 'Segoe UI, Arial, sans-serif';
+    panel.style.fontSize = '12px';
+    panel.style.boxShadow = '0 8px 20px rgba(2, 6, 23, 0.12)';
+    panel.style.width = '280px';
+    panel.innerHTML = ""
+      + "<div style='font-weight:700;color:#0f172a;margin-bottom:6px;'>Complexity Controls</div>"
+      + "<div style='margin-bottom:8px;'>Min edge count: <span id='minEdgeValue'></span></div>"
+      + "<input id='minEdgeSlider' type='range' style='width:100%;margin-bottom:10px;'/>"
+      + "<div style='margin-bottom:8px;'>Top activities by freq: <span id='topActValue'></span></div>"
+      + "<input id='topActSlider' type='range' style='width:100%;margin-bottom:12px;'/>"
+      + "<div style='height:1px;background:#e2e8f0;margin:6px 0 10px;'></div>"
+      + "<div style='font-weight:700;color:#0f172a;margin-bottom:8px;'>Global Token Replay</div>"
+      + "<div style='display:flex;gap:6px;align-items:center;margin-bottom:8px;'>"
+      + "<button id='replayToggle' style='padding:4px 8px;border:1px solid #94a3b8;background:#f8fafc;border-radius:6px;cursor:pointer;'>Play</button>"
+      + "<label style='font-size:11px;color:#334155;'>Speed</label>"
+      + "<select id='replaySpeed' style='padding:3px 4px;border:1px solid #cbd5e1;border-radius:6px;'>"
+      + "<option value='0.5'>0.5x</option><option value='1' selected>1x</option><option value='2'>2x</option><option value='4'>4x</option>"
+      + "</select></div>"
+      + "<input id='replaySlider' type='range' style='width:100%;margin-bottom:6px;'/>"
+      + "<div id='replayInfo' style='font-size:11px;color:#334155;line-height:1.4;'></div>";
+    document.body.appendChild(panel);
+
+    var startEndSet = new Set(['[START]', '[END]']);
+    var activityNodes = allNodes.filter(function (n) { return !startEndSet.has(n.id); });
+    activityNodes.sort(function (a, b) {
+      return (b.freq || 0) - (a.freq || 0) || String(a.id).localeCompare(String(b.id));
+    });
+
+    var maxEdgeCount = allEdges.reduce(function (m, e) { return Math.max(m, e.count || 1); }, 1);
+    var minTop = 1;
+    var maxTop = Math.max(minTop, activityNodes.length);
+    var defaultMinEdge = 1;
+    var defaultTop = 8;
+
+    var minEdgeSlider = document.getElementById('minEdgeSlider');
+    var topActSlider = document.getElementById('topActSlider');
+    var minEdgeValue = document.getElementById('minEdgeValue');
+    var topActValue = document.getElementById('topActValue');
+    var replaySlider = document.getElementById('replaySlider');
+    var replayToggle = document.getElementById('replayToggle');
+    var replaySpeed = document.getElementById('replaySpeed');
+    var replayInfo = document.getElementById('replayInfo');
+
+    minEdgeSlider.min = '1';
+    minEdgeSlider.max = String(maxEdgeCount);
+    minEdgeSlider.step = '1';
+    minEdgeSlider.value = String(Math.min(maxEdgeCount, Math.max(1, defaultMinEdge)));
+
+    topActSlider.min = String(minTop);
+    topActSlider.max = String(maxTop);
+    topActSlider.step = '1';
+    topActSlider.value = String(Math.min(maxTop, Math.max(minTop, defaultTop)));
+
+    replaySlider.min = '0';
+    replaySlider.max = String(Math.max(0, replayEvents.length - 1));
+    replaySlider.step = '1';
+    replaySlider.value = '0';
+
+    var replayTimer = null;
+    var replayPlaying = false;
+    var activeAnimHandle = null;
+
+    function isNodeVisible(nodeId) {
+      return nodes.get(nodeId) != null;
+    }
+
+    function tokenIdForCase(caseId) {
+      return '__token__' + String(caseId).replace(/[^a-zA-Z0-9_-]/g, '_');
+    }
+
+    function ensureTokenNode(caseId) {
+      var tokenId = tokenIdForCase(caseId);
+      if (!nodes.get(tokenId)) {
+        nodes.add({
+          id: tokenId,
+          label: '',
+          shape: 'dot',
+          size: 12,
+          color: {background: '#F59E0B', border: '#7C2D12', highlight: '#F59E0B'},
+          borderWidth: 2,
+          x: 0,
+          y: 0,
+          fixed: {x: true, y: true},
+          physics: false,
+          hidden: true
+        });
+      }
+      return tokenId;
+    }
+
+    function hideAllTokens() {
+      nodes.get().forEach(function (n) {
+        if (String(n.id).indexOf('__token__') === 0) {
+          nodes.update({id: n.id, hidden: true});
+        }
+      });
+    }
+
+    function setTokenAtNode(caseId, nodeId) {
+      var tokenId = ensureTokenNode(caseId);
+      if (!isNodeVisible(nodeId)) {
+        nodes.update({id: tokenId, hidden: true});
+        return;
+      }
+      var p = network.getPositions([nodeId])[nodeId];
+      if (!p) {
+        nodes.update({id: tokenId, hidden: true});
+        return;
+      }
+      nodes.update({id: tokenId, x: p.x, y: p.y, hidden: false});
+    }
+
+    function animateToken(caseId, fromNodeId, toNodeId, durationMs) {
+      var tokenId = ensureTokenNode(caseId);
+      if (!isNodeVisible(fromNodeId) || !isNodeVisible(toNodeId)) {
+        nodes.update({id: tokenId, hidden: true});
+        return;
+      }
+      var from = network.getPositions([fromNodeId])[fromNodeId];
+      var to = network.getPositions([toNodeId])[toNodeId];
+      if (!from || !to) {
+        nodes.update({id: tokenId, hidden: true});
+        return;
+      }
+      if (activeAnimHandle) {
+        cancelAnimationFrame(activeAnimHandle);
+      }
+      var startTs = null;
+      function step(ts) {
+        if (startTs === null) {
+          startTs = ts;
+        }
+        var t = Math.min(1, (ts - startTs) / durationMs);
+        var x = from.x + (to.x - from.x) * t;
+        var y = from.y + (to.y - from.y) * t;
+        nodes.update({id: tokenId, x: x, y: y, hidden: false});
+        if (t < 1) {
+          activeAnimHandle = requestAnimationFrame(step);
+        }
+      }
+      activeAnimHandle = requestAnimationFrame(step);
+    }
+
+    function resetStyles() {
+      nodes.get().forEach(function (n) {
+        if (String(n.id).indexOf('__token__') === 0) {
+          return;
+        }
+        nodes.update({
+          id: n.id,
+          borderWidth: 2,
+          color: {background: n.baseColor || '#3B82F6', border: '#0F172A', highlight: '#2563EB'}
+        });
+      });
+      edges.get().forEach(function (e) {
+        edges.update({
+          id: e.id,
+          width: e.baseWidth || 2,
+          color: {color: e.baseColor || '#1E40AF', highlight: '#1D4ED8', inherit: false}
+        });
+      });
+    }
+
+    function applyReplay(index, animated) {
+      resetStyles();
+      if (!replayEvents.length) {
+        replayInfo.textContent = 'No replay events available';
+        hideAllTokens();
+        return;
+      }
+
+      var idx = Math.max(0, Math.min(index, replayEvents.length - 1));
+      var current = replayEvents[idx];
+
+      var lastByCase = {};
+      for (var i = 0; i <= idx; i++) {
+        var ev = replayEvents[i];
+        lastByCase[ev.case_id] = ev;
+      }
+
+      var activeCases = Object.keys(lastByCase);
+      hideAllTokens();
+      activeCases.forEach(function (cid) {
+        var ev = lastByCase[cid];
+        setTokenAtNode(cid, ev.activity);
+      });
+
+      var prev = null;
+      for (var j = idx - 1; j >= 0; j--) {
+        if (replayEvents[j].case_id === current.case_id) {
+          prev = replayEvents[j];
+          break;
+        }
+      }
+
+      if (current && current.edge_id && edges.get(current.edge_id)) {
+        var edgeObj = edges.get(current.edge_id);
+        edges.update({
+          id: current.edge_id,
+          width: (edgeObj.baseWidth || edgeObj.width || 2) + 2,
+          color: {color: '#DC2626', highlight: '#B91C1C', inherit: false}
+        });
+      }
+
+      if (animated && prev) {
+        animateToken(current.case_id, prev.activity, current.activity, 420);
+      } else if (current) {
+        setTokenAtNode(current.case_id, current.activity);
+      }
+
+      replayInfo.innerHTML =
+        "<b>Time:</b> " + current.timestamp + "<br/>"
+        + "<b>Current case:</b> " + current.case_id + "<br/>"
+        + "<b>Current activity:</b> " + current.activity + "<br/>"
+        + "<b>Active tokens:</b> " + activeCases.length + "<br/>"
+        + "<b>Step:</b> " + (idx + 1) + " / " + replayEvents.length;
+    }
+
+    function applyComplexity() {
+      var minEdge = parseInt(minEdgeSlider.value, 10);
+      var topN = parseInt(topActSlider.value, 10);
+
+      var keepNodeIds = new Set(activityNodes.slice(0, topN).map(function (n) { return n.id; }));
+      if (allNodes.some(function (n) { return n.id === '[START]'; })) keepNodeIds.add('[START]');
+      if (allNodes.some(function (n) { return n.id === '[END]'; })) keepNodeIds.add('[END]');
+
+      var filteredEdges = allEdges.filter(function (e) {
+        var c = e.count || 1;
+        return c >= minEdge && keepNodeIds.has(e.from) && keepNodeIds.has(e.to);
+      });
+
+      var connected = new Set();
+      filteredEdges.forEach(function (e) {
+        connected.add(e.from);
+        connected.add(e.to);
+      });
+
+      var filteredNodes = allNodes.filter(function (n) {
+        return connected.has(n.id) || (startEndSet.has(n.id) && keepNodeIds.has(n.id));
+      });
+
+      nodes.clear();
+      nodes.add(filteredNodes);
+      edges.clear();
+      edges.add(filteredEdges);
+
+      minEdgeValue.textContent = String(minEdge);
+      topActValue.textContent = String(topN);
+
+      applyReplay(parseInt(replaySlider.value, 10), false);
+    }
+
+    function stopReplay() {
+      if (replayTimer) {
+        clearInterval(replayTimer);
+        replayTimer = null;
+      }
+      replayPlaying = false;
+      replayToggle.textContent = 'Play';
+    }
+
+    function startReplay() {
+      if (!replayEvents.length) {
+        return;
+      }
+      stopReplay();
+      replayPlaying = true;
+      replayToggle.textContent = 'Pause';
+      var speed = parseFloat(replaySpeed.value || '1');
+      var intervalMs = Math.max(220, Math.floor(900 / speed));
+      replayTimer = setInterval(function () {
+        var idx = parseInt(replaySlider.value, 10);
+        if (idx >= replayEvents.length - 1) {
+          stopReplay();
+          return;
+        }
+        var next = idx + 1;
+        replaySlider.value = String(next);
+        applyReplay(next, true);
+      }, intervalMs);
+    }
+
+    minEdgeSlider.addEventListener('input', function () {
+      stopReplay();
+      applyComplexity();
+    });
+    topActSlider.addEventListener('input', function () {
+      stopReplay();
+      applyComplexity();
+    });
+    replaySlider.addEventListener('input', function () {
+      stopReplay();
+      applyReplay(parseInt(replaySlider.value, 10), false);
+    });
+    replayToggle.addEventListener('click', function () {
+      if (replayPlaying) {
+        stopReplay();
+      } else {
+        startReplay();
+      }
+    });
+    replaySpeed.addEventListener('change', function () {
+      if (replayPlaying) {
+        startReplay();
+      }
+    });
+
+    if (!replayEvents.length) {
+      replayInfo.textContent = 'No replay data available';
+      replayToggle.disabled = true;
+      replaySlider.disabled = true;
+    }
+
+    applyComplexity();
+    setTimeout(function(){network.moveTo({scale: 1.5});}, 200);
+  }
+
+  setTimeout(attachControls, 150);
+})();
+</script>
+</body>
+</html>
