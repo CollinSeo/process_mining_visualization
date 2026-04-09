@@ -58,6 +58,8 @@ The following major changes were completed in this session:
 - long activity labels are wrapped into two lines
 - node label font sizes were increased
 - after that, the default initial HTML node size and node font size were tuned back down to a more moderate level so the first view is less visually heavy
+- default node sizing was later reduced again to lower node overlap in the initial view, especially on dense logs
+- frequency-based node color shading was refined from a simpler linear blue interpolation to a more discriminative scale so mid/low frequency nodes are visually easier to distinguish
 
 7. Web app conversion
 - a Streamlit GUI was added in `web_app.py`

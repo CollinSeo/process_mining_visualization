@@ -51,8 +51,11 @@ def _scale(v: float, v_min: float, v_max: float, out_min: float, out_max: float)
 
 def _blue_by_frequency(freq: int, min_f: int, max_f: int) -> str:
     t = _scale(freq, min_f, max_f, 0.0, 1.0)
-    low = mcolors.to_rgb("#BFDBFE")
-    high = mcolors.to_rgb("#1D4ED8")
+    # Apply a gentle gamma curve so mid/low frequencies are visually separated
+    # instead of collapsing into a narrow band of similar light blues.
+    t = pow(t, 0.65)
+    low = mcolors.to_rgb("#DBEAFE")
+    high = mcolors.to_rgb("#1E3A8A")
     mixed = tuple(low[i] + t * (high[i] - low[i]) for i in range(3))
     return mcolors.to_hex(mixed)
 
@@ -419,9 +422,9 @@ def draw_dfg(
         label_lines = label_map[n].splitlines() or [str(n)]
         longest_line = max(len(line) for line in label_lines)
         line_count = len(label_lines)
-        base_w = 3.0
-        w = min(9.2, base_w + (longest_line * 0.16))
-        h = _scale(result.node_freq[n], min_nf, max_nf, 1.2, 1.7) + ((line_count - 1) * 0.45)
+        base_w = 2.6
+        w = min(8.0, base_w + (longest_line * 0.14))
+        h = _scale(result.node_freq[n], min_nf, max_nf, 1.0, 1.45) + ((line_count - 1) * 0.36)
         patch = Ellipse(
             (x, y),
             width=w,
@@ -438,7 +441,7 @@ def draw_dfg(
         g,
         pos,
         labels=label_map,
-        font_size=17,
+        font_size=15,
         font_weight="bold",
         font_color="#F8FAFC",
         verticalalignment="center",
@@ -535,8 +538,8 @@ def draw_dfg_interactive_html(
 
     for n, data in g.nodes(data=True):
         display_label = _wrap_activity_label_html(str(n), max_line_length=18)
-        size = _scale(result.node_freq[n], min_nf, max_nf, 48, 90)
-        font_size = _scale(result.node_freq[n], min_nf, max_nf, 22, 30)
+        size = _scale(result.node_freq[n], min_nf, max_nf, 40, 72)
+        font_size = _scale(result.node_freq[n], min_nf, max_nf, 18, 24)
         color = _blue_by_frequency(result.node_freq[n], min_nf, max_nf)
         x, y = pos[n]
         net.add_node(
@@ -552,8 +555,8 @@ def draw_dfg_interactive_html(
             shape="ellipse",
             borderWidth=2,
             font={"size": font_size, "face": "Segoe UI Semibold", "color": "#F8FAFC", "vadjust": 0, "multi": "html"},
-            widthConstraint={"minimum": size * 2.0},
-            heightConstraint={"minimum": size * 1.05},
+            widthConstraint={"minimum": size * 1.7},
+            heightConstraint={"minimum": size * 0.95},
             x=x * 90,
             y=(-y) * 90,
             fixed={"x": False, "y": False},
