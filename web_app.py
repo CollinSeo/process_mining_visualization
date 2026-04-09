@@ -23,6 +23,30 @@ APP_TITLE = "Process Mining DFG Visualizer"
 ROOT = Path(__file__).resolve().parent
 
 
+def _embed_streamlit_html_assets(html_text: str) -> str:
+    vis_css = (ROOT / "lib" / "vis-9.1.2" / "vis-network.css").read_text(encoding="utf-8")
+    vis_js = (ROOT / "lib" / "vis-9.1.2" / "vis-network.min.js").read_text(encoding="utf-8")
+
+    html_text = html_text.replace('<script src="lib/bindings/utils.js"></script>', "")
+    html_text = html_text.replace(
+        '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />',
+        f"<style>{vis_css}</style>",
+    )
+    html_text = html_text.replace(
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>',
+        f"<script>{vis_js}</script>",
+    )
+    html_text = html_text.replace(
+        '<link\n          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"\n          rel="stylesheet"\n          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"\n          crossorigin="anonymous"\n        />',
+        "<style>.card{width:100%;border:1px solid #e2e8f0;border-radius:8px;background:#fff}.card-body{padding:0}</style>",
+    )
+    html_text = html_text.replace(
+        '<script\n          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"\n          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"\n          crossorigin="anonymous"\n        ></script>',
+        "",
+    )
+    return html_text
+
+
 def _choose_default(columns: Iterable[str], candidates: list[str]) -> Optional[str]:
     cols = list(columns)
     exact = {c: c for c in cols}
@@ -200,7 +224,7 @@ def main() -> None:
                     png_bytes = png_path.read_bytes()
                     html_text = html_path.read_text(encoding="utf-8")
 
-                html_text = html_text.replace('<script src="lib/bindings/utils.js"></script>', "")
+                html_text = _embed_streamlit_html_assets(html_text)
 
             st.session_state["dfg_result"] = {
                 "nodes": len(result.graph.nodes()),

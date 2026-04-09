@@ -92,6 +92,11 @@ The following major changes were completed in this session:
 - this removes large `nodes.update(...)` churn during replay and is especially important for logs with many simultaneous active cases
 - the overlay is redrawn on replay frames and on graph viewport changes such as zoom/drag/resize
 
+12. Streamlit interactive HTML portability fix
+- on some PCs the downloaded HTML worked but the same interactive HTML did not render inside the Streamlit preview pane
+- the root cause was that `components.html(...)` renders inside an iframe/srcdoc context, where external or relative asset loading can behave differently from opening a standalone HTML file
+- the Streamlit preview path in `web_app.py` now inlines the required `vis-network` CSS/JS and removes the remaining fragile asset references for the embedded preview
+
 ## Core Files
 
 - `dfg_visualizer.py`: main mining, graph building, rendering, and CLI entry point
