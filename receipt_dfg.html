@@ -414,6 +414,42 @@
       });
     }
 
+    function visibleEdgeId(fromNodeId, toNodeId) {
+      var edgeId = String(fromNodeId) + '|||' + String(toNodeId);
+      return edges.get(edgeId) ? edgeId : null;
+    }
+
+    function edgeControlPoint(fromPos, toPos, edgeObj) {
+      var roundness = 0.12;
+      if (edgeObj && edgeObj.smooth && typeof edgeObj.smooth.roundness === 'number') {
+        roundness = edgeObj.smooth.roundness;
+      }
+      var dx = toPos.x - fromPos.x;
+      var dy = toPos.y - fromPos.y;
+      var mx = fromPos.x + dx * 0.5;
+      var my = fromPos.y + dy * 0.5;
+      var length = Math.max(1, Math.sqrt(dx * dx + dy * dy));
+      var nx = dy / length;
+      var ny = -dx / length;
+      var curveDir = 1;
+      if (edgeObj && edgeObj.smooth && edgeObj.smooth.type === 'curvedCCW') {
+        curveDir = -1;
+      }
+      var offset = length * roundness * curveDir;
+      return {
+        x: mx + (nx * offset),
+        y: my + (ny * offset)
+      };
+    }
+
+    function pointOnQuadraticBezier(fromPos, controlPos, toPos, t) {
+      var oneMinusT = 1 - t;
+      return {
+        x: (oneMinusT * oneMinusT * fromPos.x) + (2 * oneMinusT * t * controlPos.x) + (t * t * toPos.x),
+        y: (oneMinusT * oneMinusT * fromPos.y) + (2 * oneMinusT * t * controlPos.y) + (t * t * toPos.y)
+      };
+    }
+
     function applyVisualScale() {
       updateScaleLabels();
 
@@ -613,11 +649,19 @@
           return;
         }
 
-        var x = fromPos.x + (toPos.x - fromPos.x) * state.progress;
-        var y = fromPos.y + (toPos.y - fromPos.y) * state.progress;
+        var edgeId = visibleEdgeId(state.current.activity, state.next.activity);
+        if (!edgeId) {
+          return;
+        }
+        var edgeObj = edges.get(edgeId);
+        if (!edgeObj) {
+          return;
+        }
+        var controlPos = edgeControlPoint(fromPos, toPos, edgeObj);
+        var curvePoint = pointOnQuadraticBezier(fromPos, controlPos, toPos, state.progress);
         activeCount += 1;
         movingCount += 1;
-        nextTokenDraws.push({x: x, y: y});
+        nextTokenDraws.push({x: curvePoint.x, y: curvePoint.y});
       });
 
       tokenDraws = nextTokenDraws;

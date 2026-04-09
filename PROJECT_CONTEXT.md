@@ -91,6 +91,8 @@ The following major changes were completed in this session:
 - tokens are now drawn on a dedicated canvas overlay above the graph
 - this removes large `nodes.update(...)` churn during replay and is especially important for logs with many simultaneous active cases
 - the overlay is redrawn on replay frames and on graph viewport changes such as zoom/drag/resize
+- token movement during replay now follows the visual edge curve rather than moving in a straight line between node centers
+- if filtering removes the relevant edge from the current view, that token movement is skipped instead of being drawn off-model
 
 12. Streamlit interactive HTML portability fix
 - on some PCs the downloaded HTML worked but the same interactive HTML did not render inside the Streamlit preview pane
